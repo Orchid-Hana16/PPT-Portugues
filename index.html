@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Biblioteca Rubem Braga</title>
+<meta name="theme-color" content="#0c0907">
+<style>
+@font-face{font-family:"Author";src:url(assets/fonts/Author-300.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"General Sans";src:url(assets/fonts/general-sans-400.woff2) format("woff2");font-weight:400;font-display:swap}
+:root{--bg:#0c0907;--bg2:#130f0b;--ink:#f3e9d8;--i8:rgb(243 233 216/.8);--i6:rgb(243 233 216/.6);--i4:rgb(243 233 216/.4);--rule:rgb(243 233 216/.14);--acc:#ffb054;--paper:#f1e6d0;--pink:#2a2118;
+--fd:"Author",Georgia,"Times New Roman",serif;--ft:"General Sans",system-ui,sans-serif;--e:cubic-bezier(.16,1,.3,1);--edge:clamp(16px,3vw,48px)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scrollbar-width:thin}
+body{background:var(--bg);color:var(--ink);font-family:var(--ft);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.lock{overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+::selection{background:var(--acc);color:var(--bg)}
+.lb{font-size:.75rem;letter-spacing:.12em;color:var(--i6)}
+.h2{font-family:var(--fd);font-weight:300;font-size:clamp(2.6rem,6vw,5.6rem);line-height:.95;letter-spacing:-.025em}
+.h2 span{color:var(--i4)}
+.lede{color:var(--i8);max-width:30rem}
+
+/* nav */
+.nav{position:fixed;z-index:40;inset:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding:1.1rem var(--edge);background:linear-gradient(180deg,var(--bg),transparent)}
+.brand{font-family:var(--fd);font-size:1.3rem;display:flex;gap:.6rem;align-items:center}
+.brand i{width:.5rem;height:.5rem;border-radius:9px;background:var(--acc);box-shadow:0 0 14px var(--acc)}
+.nav nav{display:flex;gap:1.6rem;font-size:.875rem;color:var(--i8)}
+.nav nav a:hover{color:var(--acc)}
+@media(max-width:600px){.nav nav a:nth-child(n+3){display:none}.nav nav{gap:1rem}}
+
+/* hero + shelf */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:6rem var(--edge) 4.5rem;
+background:radial-gradient(46rem 32rem at var(--lx,32%) var(--ly,48%),rgb(255 176 84/.16),transparent 70%),radial-gradient(70rem 30rem at 50% 115%,rgb(255 176 84/.07),transparent 70%),var(--bg)}
+.hero h1{font-family:var(--fd);font-weight:300;font-size:clamp(3.4rem,14vw,13rem);line-height:.82;letter-spacing:-.04em;text-align:center;margin-bottom:clamp(1.5rem,5vh,3.5rem)}
+.hero h1 small{display:block;font-family:var(--ft);font-size:clamp(.75rem,1.2vw,.95rem);letter-spacing:.14em;color:var(--i6);margin-bottom:1.2rem;font-weight:400}
+.shelf{display:flex;justify-content:center;align-items:flex-end;gap:4px;perspective:1300px;perspective-origin:50% 40%;padding:0 .5rem;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;scrollbar-width:none;padding-top:2.5rem}
+.shelf::-webkit-scrollbar{display:none}
+@media(max-width:900px){.shelf{justify-content:flex-start}}
+.board{height:1.1rem;margin:0 calc(var(--edge)*-.5);border-radius:2px;background:linear-gradient(180deg,#4a2f1d,#2b1a10 60%,#1a0f08);box-shadow:0 1.6rem 2.5rem rgb(0 0 0/.7),inset 0 1px rgb(255 200 140/.18)}
+.bk{position:relative;flex:none;width:var(--w);height:var(--h);scroll-snap-align:center;transform-origin:50% 100%;transform-style:preserve-3d;border-radius:2px 3px 0 0;
+background:linear-gradient(90deg,rgb(0 0 0/.45),rgb(255 255 255/.1) 14%,transparent 30%,transparent 78%,rgb(0 0 0/.4)),var(--c);box-shadow:0 0 0 1px rgb(243 233 216/.05),.5rem 0 1.4rem rgb(0 0 0/.5);
+transition:transform .7s var(--e),opacity .5s,filter .5s;animation:drop 1.1s var(--e) both;animation-delay:var(--d)}
+@keyframes drop{from{opacity:0;transform:translateY(-3rem) rotateZ(5deg)}}
+.bk::before,.bk::after{content:"";position:absolute;left:0;right:0;height:.35rem;border-block:1px solid rgb(255 200 120/.5)}
+.bk::before{top:7%}.bk::after{bottom:7%}
+.bk .sp{position:absolute;inset:14% 0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:.5rem;padding:.2rem 0}
+.bk b{font-family:var(--fd);font-weight:300;font-size:.8rem;color:rgb(255 200 120/.9)}
+.bk i{font-style:normal;writing-mode:vertical-rl;font-family:var(--fd);font-size:1.05rem;letter-spacing:.02em;color:var(--ink);overflow:hidden;text-overflow:ellipsis;max-height:100%;text-shadow:0 1px 2px rgb(0 0 0/.5)}
+.shelf:hover .bk:not(:hover):not(:focus-visible){opacity:.55;filter:brightness(.7)}
+.bk:hover,.bk:focus-visible{transform:translateY(-1.1rem) translateZ(60px) rotateY(-9deg);z-index:2;box-shadow:0 0 0 1px rgb(255 176 84/.5),0 0 2.4rem rgb(255 176 84/.35),.8rem .4rem 1.6rem rgb(0 0 0/.6)}
+.bk.out{visibility:hidden;animation:none}
+.cue{text-align:center;margin-top:1.4rem}
+.cue::before{content:"";display:inline-block;width:.45rem;height:.45rem;border-radius:9px;background:var(--acc);margin-right:.6rem;box-shadow:0 0 10px var(--acc)}
+
+/* modo WebGL */
+#gl{position:absolute;inset:0;width:100%;height:100%;display:none;z-index:1;touch-action:pan-y}
+.hero.gl #gl{display:block}
+.hero.gl{justify-content:flex-start}
+.hero.gl h1{position:relative;z-index:0;margin-top:2vh}
+.hero.gl .board{display:none}
+.hero.gl .shelf{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);padding:0}
+.hero.gl .cue{position:absolute;left:0;right:0;bottom:1.6rem;margin:0;z-index:2;pointer-events:none}
+/* overlay + open book */
+#ov{position:fixed;inset:0;z-index:60;background:rgb(6 4 3/.84);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;visibility:hidden;transition:opacity .6s var(--e),visibility 0s .6s;--H:540px}
+#ov.on{opacity:1;visibility:visible;transition:opacity .6s var(--e)}
+.scene{height:100%;display:grid;place-items:center;perspective:2600px;padding:3.5rem 1rem 5rem}
+.fly{position:relative;transform-style:preserve-3d}
+.book{position:relative;width:calc(var(--H)*1.44);height:var(--H);transform-style:preserve-3d;transition:transform 1s var(--e);font-size:calc(var(--H)/40);color:#2a1f14}
+.book.sg{width:calc(var(--H)*.72)}
+.book[data-f="0"]{transform:translateX(-25%)}
+.book.end{transform:translateX(25%)}
+.book.sg[data-f="0"],.book.sg.end{transform:none}
+.book::after{content:"";position:absolute;left:3%;right:3%;bottom:-2.2rem;height:2rem;background:radial-gradient(closest-side,rgb(0 0 0/.7),transparent);filter:blur(6px);transform:translateZ(-1px)}
+.leaf{position:absolute;top:0;left:50%;width:50%;height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform 1s var(--e),opacity .3s}
+.sg .leaf{left:0;width:100%}
+.leaf.fl{transform:rotateY(-180deg)}
+.sg .leaf.fl{opacity:0;transition:transform 1s var(--e),opacity .3s .7s}
+.face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face.f{background:linear-gradient(90deg,rgb(0 0 0/.22),transparent 7%),var(--paper);border-radius:0 3px 3px 0;box-shadow:inset -3px 0 0 rgb(0 0 0/.05)}
+.face.b{transform:rotateY(180deg);background:linear-gradient(270deg,rgb(0 0 0/.22),transparent 7%),var(--paper);border-radius:3px 0 0 3px}
+.face.cov{background:linear-gradient(90deg,rgb(0 0 0/.4),rgb(255 255 255/.12) 3%,transparent 8%),var(--c);color:var(--ink);padding:12% 10%;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 0 0 1px rgb(0 0 0/.3)}
+.cov::before{content:"";position:absolute;inset:5%;border:1px solid rgb(255 200 120/.55);pointer-events:none}
+.cov .n{font-family:var(--fd);font-size:2.2em;color:rgb(255 200 120/.95)}
+.cov h2{font-family:var(--fd);font-weight:300;font-size:2.6em;line-height:1;letter-spacing:-.02em}
+.cov p{font-size:.95em;letter-spacing:.1em;color:rgb(243 233 216/.75)}
+.pg{height:100%;padding:8% 9% 9%;display:flex;flex-direction:column;gap:.9em;overflow:auto;scrollbar-width:thin}
+.pg .tg{font-size:.8em;letter-spacing:.1em;color:rgb(42 31 20/.6);border-bottom:1px solid rgb(42 31 20/.2);padding-bottom:.6em}
+.pg h3{font-family:var(--fd);font-weight:400;font-size:2em;line-height:1.05;letter-spacing:-.015em}
+.pg p{font-family:Georgia,serif;font-size:1.05em;line-height:1.6}
+.pg .ph{border:1px dashed rgb(42 31 20/.4);padding:.9em;font-size:.9em;color:rgb(42 31 20/.6);border-radius:2px}
+.pg figure img{width:100%;max-height:16em;object-fit:cover;border-radius:2px}
+.pg figcaption{font-size:.8em;color:rgb(42 31 20/.65);margin-top:.4em}
+.pg .nm{margin-top:auto;font-size:.85em;color:rgb(42 31 20/.6);text-align:center;font-variant-numeric:tabular-nums}
+.pg.fp{justify-content:center;text-align:center;align-items:center}
+.pg.fp h3{font-size:2.8em}
+.ctl{position:absolute;z-index:3;color:var(--ink)}
+.ctl.x{top:1rem;right:var(--edge);padding:.55rem 1.1rem;border:1px solid var(--rule);border-radius:99px;font-size:.875rem;background:rgb(243 233 216/.06)}
+.ctl.x:hover{border-color:var(--acc);color:var(--acc)}
+.ctl.nv{bottom:1.1rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1.2rem}
+.ctl.nv button{width:2.8rem;height:2.8rem;border:1px solid var(--rule);border-radius:99px;font-size:1.1rem;transition:background .2s,color .2s}
+.ctl.nv button:hover:not(:disabled){background:var(--acc);color:var(--bg)}
+.ctl.nv button:disabled{opacity:.25;cursor:default}
+.ctl.nv span{min-width:7rem;text-align:center;font-variant-numeric:tabular-nums}
+
+/* fresh ink */
+.sec{padding:8rem var(--edge) 6rem;background:var(--bg2)}
+.sh{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end;margin-bottom:4rem}
+@media(max-width:800px){.sh{grid-template-columns:1fr;margin-bottom:2.5rem}.sec{padding:5.5rem var(--edge) 4rem}}
+.fi{display:grid;grid-template-columns:repeat(4,1fr);gap:3rem 2rem}
+@media(max-width:1000px){.fi{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.fi{grid-template-columns:repeat(2,1fr);gap:2rem 1rem}}
+.fc .cv{position:relative;display:block;width:100%;aspect-ratio:820/1250;border-radius:3px;overflow:hidden;text-align:left;box-shadow:0 1.4rem 2.6rem rgb(0 0 0/.55);transition:transform .8s var(--e),box-shadow .8s}
+.fc .cv::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgb(0 0 0/.35),rgb(255 255 255/.12) 2.2%,transparent 5%)}
+.fc .cv:hover{transform:translateY(-6px)}
+.fc.open .cv{transform:translateY(-10px) scale(1.02);box-shadow:0 0 0 1px rgb(255 176 84/.6),0 0 2.6rem rgb(255 176 84/.25),0 1.8rem 3rem rgb(0 0 0/.6)}
+.fc img{width:100%;height:100%;object-fit:cover;display:block}
+.fc .ph{position:absolute;inset:0;background:linear-gradient(160deg,rgb(255 255 255/.08),transparent 50%),var(--c);display:flex;align-items:flex-end;padding:1rem;font-size:.8rem;color:rgb(243 233 216/.7)}
+.fc .syn{position:absolute;inset:0;z-index:3;display:block;overflow:auto;padding:1.1rem 1rem;background:rgb(12 9 7/.92);font-size:.875rem;line-height:1.55;color:var(--i8);opacity:0;visibility:hidden;transition:opacity .5s var(--e),visibility 0s .5s}
+.fc.open .syn{opacity:1;visibility:visible;transition:opacity .5s var(--e)}
+.fc .mt{margin-top:1.1rem}
+.fc h3{font-family:var(--fd);font-weight:400;font-size:1.5rem;line-height:1.05;letter-spacing:-.015em}
+.fc .mt p{color:var(--i6);font-size:.875rem;margin-top:.3rem}
+
+/* cards */
+#cartoes{background:var(--bg);padding-bottom:9rem}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:3.5rem 3rem}
+@media(max-width:800px){.cards{grid-template-columns:1fr}}
+.note{position:relative;background:var(--paper);color:#2a1f14;padding:2.2rem 1.8rem 1.6rem;border-radius:2px;rotate:var(--r);box-shadow:0 1.6rem 2.4rem rgb(0 0 0/.55);transition:rotate .8s var(--e),translate .8s var(--e),opacity 1s var(--e);background-image:repeating-linear-gradient(transparent 0 1.9rem,rgb(60 90 160/.18) 1.9rem calc(1.9rem + 1px))}
+.note:hover{rotate:0deg;translate:0 -8px}
+.note::before{content:"";position:absolute;top:-.55rem;left:50%;width:1rem;height:1rem;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a6e,#8f1f13);box-shadow:0 .4rem .5rem rgb(0 0 0/.4)}
+.note .q{font-family:Georgia,serif;font-size:1.05rem;line-height:1.9rem;min-height:11.4rem}
+.note .q.e{color:rgb(42 31 20/.55)}
+.note .who{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid rgb(42 31 20/.25);font-size:.85rem}
+.note .who b{font-family:var(--fd);font-weight:400;font-size:1.3rem;display:block}
+.note .who span{color:rgb(42 31 20/.65)}
+
+.in{opacity:0;transform:translateY(18px);transition:opacity 1s var(--e),transform 1s var(--e)}
+.in.v{opacity:1;transform:none}
+.nojs .in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}.in{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header class="nav"><a class="brand" href="#top"><i></i><span id="marca"></span></a>
+<nav aria-label="Principal"><a href="#estante">Estante</a><a href="#fresh">Fresh ink</a><a href="#cartoes">Cartões</a></nav></header>
+
+<main id="top">
+<section class="hero" id="estante" aria-label="Estante">
+  <h1><small id="chamada"></small><span id="nome"></span></h1>
+  <canvas id="gl" aria-hidden="true"></canvas>
+  <div class="shelf" id="shelf" role="list"></div>
+  <div class="board" aria-hidden="true"></div>
+  <p class="lb cue" id="cue"></p>
+</section>
+
+<section class="sec" id="fresh" aria-labelledby="fiH">
+  <div class="sh"><h2 class="h2 in" id="fiH"></h2><p class="lede in" id="fiIntro"></p></div>
+  <div class="fi" id="fi"></div>
+</section>
+
+<section class="sec" id="cartoes" aria-labelledby="ctH">
+  <div class="sh"><h2 class="h2 in" id="ctH"></h2><p class="lede in" id="ctIntro"></p></div>
+  <div class="cards" id="cards"></div>
+</section>
+</main>
+
+<div id="ov" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Livro aberto">
+  <button class="ctl x" id="xb">Fechar · Esc</button>
+  <div class="scene"><div class="fly" id="fly"><div class="book" id="book"></div></div></div>
+  <div class="ctl nv"><button id="pv" aria-label="Página anterior">←</button><span class="lb" id="pn"></span><button id="nx" aria-label="Próxima página">→</button></div>
+</div>
+
+<script src="dados.js"></script>
+<script>
+(() => {
+const B = window.BIBLIOTECA, $ = (s, r = document) => r.querySelector(s);
+const pad = n => String(n).padStart(2, '0');
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
+const FINE = matchMedia('(pointer:fine)').matches;
+const T = RM ? 0 : 1;
+
+/* ---- textos gerais ---- */
+$('#marca').textContent = B.site.marca; $('#nome').textContent = B.site.nome; $('#chamada').textContent = B.site.chamada;
+$('#cue').textContent = FINE ? B.site.dica : B.site.dicaToque;
+document.title = B.site.marca;
+const head = (id, o) => { $(id).innerHTML = esc(o.titulo) + ' <span>' + esc(o.destaque) + '</span>'; };
+head('#fiH', B.freshInk); head('#ctH', B.cartoes);
+$('#fiIntro').textContent = B.freshInk.intro; $('#ctIntro').textContent = B.cartoes.intro;
+const tt = (t, i) => t.titulo || ('Tópico ' + pad(i + 1));
+
+/* ---- estante ---- */
+const HS = [17, 19.5, 16.5, 18.5, 17.5, 20, 16, 18.8], WS = [3.6, 4.4, 3.2, 4.8, 3.8, 4.2, 3.4, 4.6];
+$('#shelf').innerHTML = B.topicos.map((t, i) => `<button class="bk" role="listitem" data-i="${i}" style="--c:${esc(t.cor)};--h:${HS[i % 8]}rem;--w:${WS[i % 8]}rem;--d:${i * 70 * T}ms" aria-label="Abrir livro: ${esc(tt(t, i))}"><span class="sp"><b>${pad(i + 1)}</b><i>${esc(tt(t, i))}</i></span></button>`).join('');
+const hero = $('#estante');
+hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); hero.style.setProperty('--lx', ((e.clientX - r.left) / r.width * 100) + '%'); hero.style.setProperty('--ly', ((e.clientY - r.top) / r.height * 100) + '%'); });
+
+/* ---- livro aberto ---- */
+const ov = $('#ov'), book = $('#book'), fly = $('#fly');
+let cur = null, f = 0, S = 0, max = 0, busy = false, single = false, spine = null, leaves = [], total = 0, zt = [];
+
+function pageHTML(p, i, t, ti) {
+  const n = pad(i + 1);
+  const tag = `<div class="tg">Tópico ${pad(ti + 1)} · ${esc(tt(t, ti))}</div>`;
+  if (p.fp) return `<div class="pg fp">${tag}<h3>${esc(tt(t, ti))}</h3>${t.subtitulo ? `<p>${esc(t.subtitulo)}</p>` : '<p class="ph">[Subtítulo a preencher]</p>'}<p class="lb" style="color:rgb(42 31 20/.6)">${esc(B.site.nome)}</p><div class="nm">${n} / ${pad(total)}</div></div>`;
+  const tx = (p.texto && p.texto.length) ? p.texto.map(x => `<p>${esc(x)}</p>`).join('') : '<p class="ph">[Texto a preencher em dados.js]</p>';
+  const im = p.imagem ? `<figure>${p.imagem.src ? `<img src="${esc(p.imagem.src)}" alt="${esc(p.imagem.legenda)}">` : '<div class="ph">[Imagem a preencher]</div>'}${p.imagem.legenda ? `<figcaption>${esc(p.imagem.legenda)}</figcaption>` : ''}</figure>` : '';
+  return `<div class="pg">${tag}<h3>${p.titulo ? esc(p.titulo) : '[Título da página a preencher]'}</h3>${tx}${im}<div class="nm">${n} / ${pad(total)}</div></div>`;
+}
+function build(t, ti) {
+  single = innerWidth < 720;
+  const H = single ? Math.min(innerHeight * .74, innerWidth * .88 / .72) : Math.min(innerHeight * .76, innerWidth * .92 / 1.44);
+  ov.style.setProperty('--H', H + 'px');
+  const pg = [{ fp: 1 }, ...t.paginas]; total = pg.length;
+  const cover = `<div class="face f cov" style="--c:${esc(t.cor)}"><span class="n">${pad(ti + 1)}</span><div><h2>${esc(tt(t, ti))}</h2><p style="margin-top:1em">${esc(B.site.nome.toUpperCase())}</p></div></div>`;
+  let sh = [];
+  if (single) { sh = [[null, null], ...pg.map((p, i) => [p, null])]; }
+  else { sh = [[null, 0]]; for (let j = 1; 2 * j - 1 < total; j++) sh.push([2 * j - 1, 2 * j < total ? 2 * j : null]); }
+  S = sh.length; max = single ? S - 1 : S;
+  const R = x => x == null ? '' : pageHTML(single ? x : pg[x], single ? pg.indexOf(x) : x, t, ti);
+  book.className = 'book' + (single ? ' sg' : '');
+  book.innerHTML = sh.map((s, k) => {
+    const front = k === 0 ? cover : `<div class="face f">${R(s[0])}</div>`;
+    const back = (s[1] == null || single) ? '<div class="face b"></div>' : `<div class="face b">${R(s[1])}</div>`;
+    return `<div class="leaf" style="z-index:${S - k}">${front}${back}</div>`;
+  }).join('');
+  leaves = [...book.children]; f = 0; book.dataset.f = 0; book.classList.remove('end'); ui();
+}
+function ui() {
+  $('#pn').textContent = f === 0 ? 'Capa' : (single ? `Página ${pad(f)} / ${pad(total)}` : `${pad(Math.min(2 * f, total))} / ${pad(total)}`);
+  $('#pv').disabled = f === 0; $('#nx').disabled = f >= max;
+}
+function setF(nf) {
+  nf = Math.max(0, Math.min(max, nf)); if (nf === f) return 0;
+  const a = Math.min(f, nf), b = Math.max(f, nf), up = nf > f, N = b - a;
+  zt.forEach(clearTimeout); zt = [];
+  for (let k = a; k < b; k++) {
+    const i = up ? k - a : b - 1 - k, d = i * 90 * T, L = leaves[k];
+    L.style.transitionDelay = d + 'ms';
+    L.classList.toggle('fl', up);
+    zt.push(setTimeout(() => { L.style.zIndex = up ? k + 1 : S - k; }, d + 450 * T));
+  }
+  f = nf; book.dataset.f = f; book.classList.toggle('end', !single && f === S); ui();
+  return (N - 1) * 90 * T + 1000 * T;
+}
+async function turn(d) { if (busy || cur === null) return; busy = true; const w = setF(f + d); await sleep(w); busy = false; }
+async function open(i, el) {
+  if (busy || cur !== null) return; busy = true; cur = i; spine = el;
+  build(B.topicos[i], i);
+  ov.classList.add('on'); ov.setAttribute('aria-hidden', 'false'); document.body.classList.add('lock');
+  const r = el.getBoundingClientRect(); el.classList.add('out');
+  const fr = fly.getBoundingClientRect(), s = r.height / fr.height;
+  const dx = r.left + r.width / 2 - (fr.left + fr.width / 2), dy = r.top + r.height / 2 - (fr.top + fr.height / 2);
+  if (!RM) await fly.animate([{ transform: `translate(${dx}px,${dy}px) scale(${s}) rotateY(-80deg)` }, { transform: 'none' }], { duration: 950, easing: 'cubic-bezier(.16,1,.3,1)' }).finished;
+  await sleep(150 * T); await sleep(setF(1)); busy = false; $('#xb').focus({ preventScroll: true });
+}
+async function close() {
+  if (busy || cur === null) return; busy = true;
+  await sleep(setF(0));
+  const r = spine.getBoundingClientRect(), fr = fly.getBoundingClientRect(), s = r.height / fr.height;
+  const dx = r.left + r.width / 2 - (fr.left + fr.width / 2), dy = r.top + r.height / 2 - (fr.top + fr.height / 2);
+  const done = () => { ov.classList.remove('on'); ov.setAttribute('aria-hidden', 'true'); document.body.classList.remove('lock'); spine.classList.remove('out'); spine.focus({ preventScroll: true }); cur = null; busy = false; };
+  if (RM) return done();
+  const an = fly.animate([{ transform: 'none' }, { transform: `translate(${dx}px,${dy}px) scale(${s}) rotateY(-80deg)` }], { duration: 800, easing: 'cubic-bezier(.7,0,.3,1)', fill: 'forwards' });
+  await an.finished; ov.classList.remove('on'); await sleep(60); an.cancel(); done();
+}
+window.__openBook = open;
+$('#shelf').addEventListener('click', e => { const b = e.target.closest('.bk'); if (b) open(+b.dataset.i, hero.classList.contains('gl') && window.__proxy ? window.__proxy(+b.dataset.i) : b); });
+ov.addEventListener('click', e => { if (!e.target.closest('.book, .ctl')) close(); });
+$('#xb').addEventListener('click', close);
+$('#pv').addEventListener('click', () => turn(-1)); $('#nx').addEventListener('click', () => turn(1));
+addEventListener('keydown', e => { if (cur === null) return; if (e.key === 'Escape') close(); else if (e.key === 'ArrowRight') turn(1); else if (e.key === 'ArrowLeft') turn(-1); });
+let sx = null;
+book.addEventListener('pointerdown', e => { sx = e.clientX; });
+book.addEventListener('pointerup', e => { if (sx === null) return; const d = e.clientX - sx; sx = null; if (Math.abs(d) > 45) turn(d < 0 ? 1 : -1); });
+let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (cur !== null && !busy) { const ff = f; build(B.topicos[cur], cur); leaves.forEach(l => l.style.transition = 'none'); setF(ff); leaves.forEach(l => l.style.transition = ''); } }, 200); });
+
+/* ---- Fresh ink ---- */
+$('#fi').innerHTML = B.freshInk.livros.slice(0, 7).map((l, i) => `<article class="fc in"><button class="cv" aria-expanded="false" style="--c:${esc(l.cor)}">${l.capa ? `<img src="${esc(l.capa)}" alt="Capa de ${esc(l.titulo)}" loading="lazy">` : '<span class="ph">Capa a preencher</span>'}<span class="syn">${l.sinopse ? esc(l.sinopse) : '[Sinopse a preencher em dados.js]'}</span></button><div class="mt"><h3>${l.titulo ? esc(l.titulo) : 'Livro ' + pad(i + 1) + ' — título a preencher'}</h3><p>${esc(l.autor || B.site.nome)}</p></div></article>`).join('');
+const fcs = [...document.querySelectorAll('.fc')];
+fcs.forEach(c => $('.cv', c).addEventListener('click', () => {
+  const on = !c.classList.contains('open');
+  fcs.forEach(o => { o.classList.remove('open'); $('.cv', o).setAttribute('aria-expanded', 'false'); });
+  if (on) { c.classList.add('open'); $('.cv', c).setAttribute('aria-expanded', 'true'); }
+}));
+
+/* ---- Written on a card ---- */
+const RT = [-2.2, 1.6, -1.2];
+$('#cards').innerHTML = B.cartoes.itens.map((c, i) => `<article class="note in" style="--r:${RT[i % 3]}deg"><p class="q${c.texto ? '' : ' e'}">${c.texto ? esc(c.texto) : '[Texto do cartão a preencher]'}</p><div class="who"><b>${c.nome ? esc(c.nome) : '[Nome]'}</b><span>${esc(c.papel || '[Função]')}${c.livro ? ' · ' + esc(c.livro) : ''}</span></div></article>`).join('');
+
+/* ---- entrada suave ao rolar ---- */
+if ('IntersectionObserver' in window && !RM) {
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('v'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.in').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
+} else document.querySelectorAll('.in').forEach(el => el.classList.add('v'));
+document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => { const t = a.getAttribute('href') === '#top' ? document.body : $(a.getAttribute('href')); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); } }));
+})();
+</script>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+/* Estante WebGL (three.js). Se falhar, a estante CSS continua funcionando. */
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const B = window.BIBLIOTECA, hero = document.getElementById('estante'), canvas = document.getElementById('gl');
+const pad = n => String(n).padStart(2, '0');
+const mb = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+let ok = false; try { ok = !!document.createElement('canvas').getContext('webgl2'); } catch {}
+if (ok && window.__openBook) start().catch(e => console.warn('WebGL indisponível; usando a estante CSS.', e));
+
+async function start() {
+  await document.fonts.ready;
+  const rnd = mb(1987), RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const R = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+  R.setPixelRatio(Math.min(devicePixelRatio, 1.75)); R.setClearColor(0, 0);
+  R.toneMapping = THREE.ACESFilmicToneMapping; R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
+  const S = new THREE.Scene(), cam = new THREE.PerspectiveCamera(26, 1, .1, 60);
+  S.environment = new THREE.PMREMGenerator(R).fromScene(new RoomEnvironment(), .04).texture; S.environmentIntensity = .22;
+  const mk = (w, h, fn) => { const c = document.createElement('canvas'); c.width = w; c.height = h; fn(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+  const F = 'Author, Georgia, serif';
+  const name = (t, i) => t.titulo || 'Tópico ' + pad(i + 1);
+
+  const wood = mk(1024, 256, (x, w, h) => { x.fillStyle = '#2b1a10'; x.fillRect(0, 0, w, h); for (let i = 0; i < 260; i++) { const y = rnd() * h, a = .03 + rnd() * .08; x.strokeStyle = rnd() < .5 ? `rgba(0,0,0,${a * 1.6})` : `rgba(140,90,50,${a})`; x.lineWidth = .5 + rnd() * 2.2; x.beginPath(); x.moveTo(0, y); for (let u = 0; u <= w; u += 32) x.lineTo(u, y + Math.sin(u * .006 + i) * 3); x.stroke(); } });
+  wood.wrapS = wood.wrapT = THREE.RepeatWrapping; wood.repeat.set(3, 1);
+  const pages = mk(512, 64, (x, w, h) => { for (let u = 0; u < w; u++) { const k = .86 + rnd() * .14; x.fillStyle = `rgb(${236 * k | 0},${222 * k | 0},${194 * k | 0})`; x.fillRect(u, 0, 1, h); } });
+  const shelf = new THREE.Mesh(new THREE.BoxGeometry(14, .09, 1.5), new THREE.MeshStandardMaterial({ map: wood, color: 0xd8b89a, roughness: .62, envMapIntensity: .04 }));
+  shelf.position.set(0, -.045, .12); shelf.receiveShadow = true; S.add(shelf);
+
+  const lamp = new THREE.SpotLight(0xffc488, 34, 16, .36, .9, 1.3); lamp.position.set(-1.4, 3, 2.8); lamp.castShadow = true; lamp.shadow.mapSize.set(2048, 2048); lamp.shadow.bias = -.0004; lamp.shadow.normalBias = .015; lamp.shadow.radius = 4; S.add(lamp, lamp.target);
+  const rim = new THREE.DirectionalLight(0x6f8cff, 2.6); rim.position.set(3.4, .12, -2.6); S.add(rim);
+  const rim2 = new THREE.DirectionalLight(0x8fa4ff, .5); rim2.position.set(-3, .1, -2); S.add(rim2);
+  S.add(new THREE.HemisphereLight(0x302418, 0x140c07, .3));
+
+  const spineTex = (t, i) => mk(256, 1024, (x, w, h) => {
+    x.fillStyle = t.cor; x.fillRect(0, 0, w, h);
+    const g = x.createLinearGradient(0, 0, w, 0); g.addColorStop(0, 'rgba(0,0,0,.4)'); g.addColorStop(.18, 'rgba(255,255,255,.08)'); g.addColorStop(.5, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.42)'); x.fillStyle = g; x.fillRect(0, 0, w, h);
+    x.fillStyle = 'rgba(255,200,120,.85)'; [[70, 5], [86, 2], [h - 75, 5], [h - 90, 2]].forEach(([y, a]) => x.fillRect(0, y, w, a));
+    x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = `56px ${F}`; x.fillText(pad(i + 1), w / 2, 160);
+    const txt = name(t, i); let sz = 84; do { x.font = `${sz}px ${F}`; sz -= 4; } while (x.measureText(txt).width > 600 && sz > 28);
+    x.fillStyle = '#f3e9d8'; x.save(); x.translate(w / 2, h / 2 + 90); x.rotate(Math.PI / 2); x.fillText(txt, 0, 0); x.restore();
+  });
+  const coverTex = (t, i) => mk(512, 780, (x, w, h) => {
+    x.fillStyle = t.cor; x.fillRect(0, 0, w, h);
+    const g = x.createLinearGradient(0, 0, w, 0); g.addColorStop(0, 'rgba(0,0,0,.45)'); g.addColorStop(.06, 'rgba(255,255,255,.1)'); g.addColorStop(.12, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0, 0, w, h);
+    x.strokeStyle = 'rgba(255,200,120,.6)'; x.lineWidth = 2; x.strokeRect(36, 36, w - 72, h - 72);
+    x.fillStyle = 'rgba(255,200,120,.95)'; x.font = `64px ${F}`; x.textAlign = 'left'; x.fillText(pad(i + 1), 66, 130);
+    x.fillStyle = '#f3e9d8'; x.font = `56px ${F}`; const ln = []; let cur = ''; name(t, i).split(' ').forEach(wd => { const n = cur ? cur + ' ' + wd : wd; if (x.measureText(n).width > 380 && cur) { ln.push(cur); cur = wd; } else cur = n; }); ln.push(cur);
+    ln.forEach((l, k) => x.fillText(l, 66, h - 130 - (ln.length - 1 - k) * 64));
+    x.font = `22px ${F}`; x.fillStyle = 'rgba(243,233,216,.7)'; x.fillText(B.site.nome.toUpperCase(), 66, h - 70);
+  });
+
+  const books = [], hits = [];
+  B.topicos.forEach((t, i) => {
+    const H = .9 + rnd() * .14, T = H * (.22 + rnd() * .07), W = H * .66, bd = .012, col = new THREE.Color(t.cor);
+    const std = (o) => new THREE.MeshStandardMaterial(Object.assign({ roughness: .7, envMapIntensity: .45 }, o));
+    const edge = std({ color: col.clone().multiplyScalar(.62) }), back = std({ color: col }), cover = std({ map: coverTex(t, i), roughness: .6 }), spM = std({ map: spineTex(t, i), roughness: .78 }), pgM = std({ map: pages, roughness: .9, envMapIntensity: .3 });
+    const inner = new THREE.Group();
+    const pg = new THREE.Mesh(new THREE.BoxGeometry(T - bd * 2, H * .975, W * .965), pgM); pg.position.set(0, H / 2, -W * .0175);
+    const fr = new THREE.Mesh(new THREE.BoxGeometry(bd, H, W), [cover, edge, edge, edge, edge, edge]); fr.position.set(T / 2 - bd / 2, H / 2, 0);
+    const bk = new THREE.Mesh(new THREE.BoxGeometry(bd, H, W), [edge, back, edge, edge, edge, edge]); bk.position.set(-T / 2 + bd / 2, H / 2, 0);
+    const sp = new THREE.Mesh(new THREE.CylinderGeometry(T / 2, T / 2, H, 24, 1, true, -Math.PI / 2, Math.PI), spM); sp.scale.z = .32; sp.position.set(0, H / 2, W / 2 - .002);
+    [pg, fr, bk, sp].forEach(m => { m.castShadow = m.receiveShadow = true; m.userData.i = i; inner.add(m); hits.push(m); });
+    const slot = new THREE.Group(); slot.add(inner); S.add(slot);
+    books.push({ H, T, W, slot, inner, yaw: -.05 + (rnd() - .5) * .05, pull: 0, push: 0, base: 0, hid: 0 });
+  });
+  let x = 0; books.forEach(b => { b.base = x + b.T / 2; x += b.T + .012 + rnd() * .006; });
+  const rowW = x; books.forEach(b => b.base -= rowW / 2);
+
+  let W = 1, Hh = 1, panX = 0, panT = 0, dist = 4.5;
+  function frame() {
+    const r = hero.getBoundingClientRect(); W = r.width; Hh = r.height; R.setSize(W, Hh, false); cam.aspect = W / Hh;
+    const phone = W < 768, hpw = Math.tan(cam.fov * Math.PI / 360) * cam.aspect;
+    dist = Math.max((phone ? 1.55 : rowW * 1.62) / 2 / hpw, 1.1 / (2 * Math.tan(cam.fov * Math.PI / 360) * .5));
+    cam.setViewOffset(W, Hh, 0, -Hh * (phone ? .1 : .115), W, Hh); cam.updateProjectionMatrix();
+  }
+  frame(); addEventListener('resize', frame);
+
+  const ndc = new THREE.Vector2(9, 9), ray = new THREE.Raycaster(); let hover = -1, lx = -.9, ly = 2.6, ltx = -.9, lty = 2.6, tx = 0, ty = 0, cx = 0, cy = 0;
+  const pick = () => { ray.setFromCamera(ndc, cam); const h = ray.intersectObjects(hits, false)[0]; return h ? h.object.userData.i : -1; };
+  const setN = e => { const r = canvas.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); tx = ndc.x; ty = ndc.y; ltx = ndc.x * 1.6 - .2; lty = 2.4 + ndc.y * .5; };
+  hero.addEventListener('pointermove', e => { setN(e); if (e.pointerType === 'mouse') { const i = pick(); if (i !== hover) { hover = i; canvas.style.cursor = i >= 0 ? 'pointer' : ''; } } });
+  hero.addEventListener('pointerleave', () => { hover = -1; ndc.set(9, 9); });
+  let dx0 = 0, pan0 = 0, mv = 0, drag = false;
+  canvas.addEventListener('pointerdown', e => { setN(e); dx0 = e.clientX; pan0 = panT; mv = 0; drag = e.pointerType !== 'mouse'; });
+  canvas.addEventListener('pointermove', e => { if (!drag) return; const d = e.clientX - dx0; mv = Math.max(mv, Math.abs(d)); if (W < 768) panT = Math.max(-(rowW / 2 - .5), Math.min(rowW / 2 - .5, pan0 - d / W * 1.6)); });
+  canvas.addEventListener('pointerup', e => { drag = false; if (mv > 8) return; setN(e); const i = pick(); if (i >= 0) window.__openBook(i, proxy(i)); });
+  canvas.addEventListener('pointercancel', () => drag = false);
+
+  const box = new THREE.Box3(), v = new THREE.Vector3();
+  function rect(k) {
+    const c = canvas.getBoundingClientRect(); box.setFromObject(books[k].slot); let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (const a of [box.min.x, box.max.x]) for (const b of [box.min.y, box.max.y]) for (const d of [box.min.z, box.max.z]) { v.set(a, b, d).project(cam); const px = c.left + (v.x + 1) / 2 * c.width, py = c.top + (1 - v.y) / 2 * c.height; x0 = Math.min(x0, px); x1 = Math.max(x1, px); y0 = Math.min(y0, py); y1 = Math.max(y1, py); }
+    return { left: x0, top: y0, width: x1 - x0, height: y1 - y0 };
+  }
+  const proxy = window.__proxy = k => ({ getBoundingClientRect: () => rect(k), classList: { add: () => { books[k].hid = 1; }, remove: () => { books[k].hid = 0; } }, focus() {} });
+
+  let vis = true, t = 0, last = performance.now(), t0 = null, shown = false;
+  new IntersectionObserver(e => vis = e[0].isIntersecting, { rootMargin: '10% 0px' }).observe(hero);
+  const sm = (p, a, b) => { p = Math.min(1, Math.max(0, (p - a) / (b - a))); return p * p * (3 - 2 * p); };
+  function tick(now) {
+    requestAnimationFrame(tick); const dt = Math.min(.064, (now - last) / 1000); last = now; if (!vis || document.hidden) return; t += dt; if (t0 === null) t0 = now;
+    const kp = 1 - Math.exp(-dt * 9);
+    books.forEach((b, k) => { b.pull += ((hover === k && !b.hid ? 1 : 0) - b.pull) * kp; });
+    books.forEach((b, k) => {
+      let s = 0; books.forEach((o, j) => { if (j !== k) s += Math.sign(k - j) * Math.max(0, o.pull) * .05 / Math.abs(k - j) ** 1.2; });
+      b.push += (s - b.push) * kp;
+      const d = RM ? 1 : Math.min(1, Math.max(0, (now - t0 - 500 - k * 60) / 1000)), de = 1 - Math.pow(1 - d, 3), p = b.pull, rot = sm(p, .25, 1);
+      b.slot.visible = !b.hid; b.slot.position.set(b.base + b.push, (1 - de) * 2.2, 0); b.slot.rotation.y = b.yaw * (1 - rot); b.slot.rotation.z = (1 - de) * (k % 2 ? .25 : -.2);
+      b.inner.position.set(0, p * .07, p * b.W * .92); b.inner.rotation.y = -Math.PI / 2 * rot * .94; b.inner.scale.setScalar(1 + p * .08);
+    });
+    lx += (ltx - lx) * (1 - Math.exp(-dt * 4)); ly += (lty - ly) * (1 - Math.exp(-dt * 4)); panX += (panT - panX) * kp; cx += (tx - cx) * kp * .6; cy += (ty - cy) * kp * .6;
+    const fl = 1 + Math.sin(t * 11.3) * .012 + Math.sin(t * 27.1) * .008;
+    lamp.position.set(lx + panX, ly, 2.3); lamp.target.position.set(lx * .7 + panX, .45, 0); lamp.intensity = 34 * fl;
+    cam.position.set(panX + cx * .12, .55 + cy * .06, dist * (RM ? 1 : 1 + .06 * Math.exp(-t * 1.4))); cam.lookAt(panX + cx * .04, .5, 0);
+    v.set(lx * .55 + panX, .9, 0).project(cam);
+    hero.style.setProperty('--lx', ((v.x * .5 + .5) * 100).toFixed(1) + '%'); hero.style.setProperty('--ly', ((-v.y * .5 + .5) * 100).toFixed(1) + '%');
+    R.render(S, cam); if (!shown) { shown = true; hero.classList.add('gl'); }
+  }
+  requestAnimationFrame(tick);
+}
+</script>
+</body>
+</html>
