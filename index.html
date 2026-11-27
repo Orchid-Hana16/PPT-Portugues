@@ -70,7 +70,8 @@ transition:transform .7s var(--e),opacity .5s,filter .5s;animation:drop 1.1s var
 #gl{position:absolute;inset:0;width:100%;height:100%;display:none;z-index:1;touch-action:pan-y}
 .hero.gl #gl{display:block}
 .hero.gl{justify-content:flex-start}
-.hero.gl h1{position:relative;z-index:0;margin-top:2vh}
+.hero.gl h1{position:relative;z-index:0;margin-top:0;margin-bottom:0;font-size:clamp(3rem,9.5vw,8.5rem)}
+.hero.gl h1 small{margin-bottom:.7rem}
 .hero.gl .board{display:none}
 .hero.gl .shelf{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);padding:0}
 .hero.gl .cue{position:absolute;left:0;right:0;bottom:1.6rem;margin:0;z-index:2;pointer-events:none}
@@ -425,8 +426,8 @@ async function start() {
     const r = hero.getBoundingClientRect(); W = r.width; Hh = r.height; R.setSize(W, Hh, false); composer.setSize(W, Hh); motesMat.uniforms.uPx.value = R.getPixelRatio() * Hh * .02; cam.aspect = W / Hh;
     const phone = W < 768, hpw = Math.tan(cam.fov * Math.PI / 360) * cam.aspect;
     const tf = Math.tan(cam.fov * Math.PI / 360), h1b = hero.querySelector('h1').getBoundingClientRect().bottom - r.top;
-    const yBase = Hh - 70, avail = Math.max(Hh * .3, yBase - h1b - 14); /* área livre entre o título e a base da estante */
-    dist = Math.max((phone ? 1.55 : rowW * 1.35) / 2 / hpw, Hh / (avail / 1.25) / (2 * tf));
+    const yBase = Hh - 70, avail = Math.max(Hh * .3, yBase - h1b - 6); /* área livre entre o título e a base da estante */
+    dist = Math.max((phone ? 1.55 : rowW * 1.35) / 2 / hpw, Hh / (avail / 1.1) / (2 * tf));
     const ppu = Hh / (2 * dist * tf);
     cam.setViewOffset(W, Hh, 0, -(yBase - Hh / 2 - .5 * ppu), W, Hh); cam.updateProjectionMatrix();
   }
